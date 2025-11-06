@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VoiceFlow - Speech to Text</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="bg-overlay"></div>
+  <div class="gradient-overlay"></div>
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+
+  <div class="nav-bar">
+    <a href="index.html" class="nav-btn">🎙️ Text to Speech</a>
+    <a href="stt.html" class="nav-btn active">🎤 Speech to Text</a>
+    <a href="translate.html" class="nav-btn">🌍 Translate</a>
+  </div>
+
+  <div class="container">
+    <div class="header">
+      <div class="logo">
+        <span class="logo-icon">🎤</span>
+        <span class="logo-text">Speech to Text</span>
+      </div>
+      <p class="tagline">Convert your voice into written text instantly</p>
+    </div>
+
+    <div class="main-card">
+      <button id="speechToTextBtn" class="btn btn-success" style="margin-bottom: 30px;">
+        <span id="micIcon">🎤</span>
+        <span id="micText">Start Recording</span>
+      </button>
+
+      <div class="input-section">
+        <label class="label">📝 Transcribed Text</label>
+        <div class="textarea-wrapper">
+          <textarea id="sttOutput" placeholder="Your transcribed text will appear here..." readonly></textarea>
+          <span class="char-count" id="sttCharCount">0 characters</span>
+        </div>
+      </div>
+
+      <button id="copySttBtn" class="btn btn-primary">📋 Copy Text</button>
+    </div>
+  </div>
+
+  <script src="script_stt.js"></script>
+</body>
+</html>

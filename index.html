@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VoiceFlow - Text to Speech</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="bg-overlay"></div>
+  <div class="gradient-overlay"></div>
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+
+ 
+  <div class="nav-bar">
+    <a href="index.html" class="nav-btn active">🎙️ Text to Speech</a>
+    <a href="stt.html" class="nav-btn">🎤 Speech to Text</a>
+    <a href="translate.html" class="nav-btn">🌍 Translate</a>
+  </div>
+
+  <div class="container">
+    <div class="header">
+      <div class="logo">
+        <span class="logo-icon">🎙️</span>
+        <span class="logo-text">Text to Speech</span>
+      </div>
+      <p class="tagline">Transform your text into natural-sounding speech in multiple languages</p>
+    </div>
+
+    <div class="main-card">
+      <div class="input-section">
+        <label class="label">📝 Enter Your Text</label>
+        <div class="textarea-wrapper">
+          <textarea id="textInput" placeholder="Type or paste your text here... Try different languages!"></textarea>
+          <span class="char-count" id="charCount">0 characters</span>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="select-wrapper">
+          <label class="label">🌐 Select Voice</label>
+          <select id="voiceSelect">
+            <option value="">Loading voices...</option>
+          </select>
+          <span class="select-icon">▼</span>
+        </div>
+
+        <div>
+          <label class="label">&nbsp;</label>
+          <button id="listenBtn" class="btn btn-primary">
+            <span id="btnIcon">🔊</span>
+            <span id="btnText">Generate Speech</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="audio-section" id="audioSection">
+        <label class="label">🎵 Your Generated Speech</label>
+        <div class="audio-player">
+          <audio id="voicePreview" controls></audio>
+        </div>
+        <button id="downloadBtn" class="btn btn-success">
+          ⬇️ Download Audio
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script_tts.js"></script>
+</body>
+</html>

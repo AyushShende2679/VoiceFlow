@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VoiceFlow - Translator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="bg-overlay"></div>
+  <div class="gradient-overlay"></div>
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+
+ 
+  <div class="nav-bar">
+    <a href="index.html" class="nav-btn">🎙️ Text to Speech</a>
+    <a href="stt.html" class="nav-btn">🎤 Speech to Text</a>
+    <a href="translate.html" class="nav-btn active">🌍 Translate</a>
+  </div>
+
+  <div class="container">
+    <div class="header">
+      <div class="logo">
+        <span class="logo-icon">🌍</span>
+        <span class="logo-text">Translator</span>
+      </div>
+      <p class="tagline">Translate text between multiple languages instantly</p>
+    </div>
+
+    <div class="main-card">
+      <div class="input-section">
+        <label class="label">📝 Enter Text to Translate</label>
+        <div class="textarea-wrapper">
+          <textarea id="translateInput" placeholder="Type or paste your text here..."></textarea>
+          <span class="char-count" id="translateCharCount">0 characters</span>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="select-wrapper">
+          <label class="label">🌐 Target Language</label>
+          <select id="translateSelect">
+            <option value="en">English</option>
+            <option value="hi">Hindi</option>
+            <option value="mr">Marathi</option>
+            <option value="ko">Korean</option>
+            <option value="zh">Chinese</option>
+            <option value="es">Spanish</option>
+            <option value="fr">French</option>
+            <option value="de">German</option>
+            <option value="ja">Japanese</option>
+            <option value="ar">Arabic</option>
+          </select>
+          <span class="select-icon">▼</span>
+        </div>
+
+        <div>
+          <label class="label">&nbsp;</label>
+          <button id="translateBtn" class="btn btn-primary">
+            🔄 Translate
+          </button>
+        </div>
+      </div>
+
+      <div id="translatedSection" class="input-section" style="display:none;">
+        <label class="label">✅ Translated Text</label>
+        <div class="textarea-wrapper">
+          <textarea id="translateOutput" readonly></textarea>
+          <span class="char-count" id="translateOutputCount">0 characters</span>
+        </div>
+      </div>
+
+      <div id="translateAlert"></div>
+    </div>
+  </div>
+
+  <script src="script_translate.js"></script>
+</body>
+</html>
