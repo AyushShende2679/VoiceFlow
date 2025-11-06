@@ -27,10 +27,10 @@ translateBtn.addEventListener("click", async () => {
   translateBtn.innerHTML = '<span class="spinner"></span> Translating...';
 
   try {
-    const res = await fetch("http://localhost:3000/api/translate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text, targetLang })
+    const res = await fetch("https://voiceflow-30h7.onrender.com/api/translate", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ text, targetLang })
     });
     const data = await res.json();
 

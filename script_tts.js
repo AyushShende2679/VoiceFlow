@@ -8,15 +8,13 @@ const charCount = document.getElementById("charCount");
 const btnIcon = document.getElementById("btnIcon");
 const btnText = document.getElementById("btnText");
 
-
 textInput.addEventListener('input', () => {
   charCount.textContent = `${textInput.value.length} characters`;
 });
 
-
 async function loadVoices() {
   try {
-    const res = await fetch("http://localhost:3000/api/voices");
+    const res = await fetch("https://voiceflow-30h7.onrender.com/api/voices");
     if (!res.ok) throw new Error("Failed to load voices");
     const data = await res.json();
     voiceSelect.innerHTML = '<option value="">Choose a voice...</option>';
@@ -52,7 +50,7 @@ async function generateSpeech() {
   audioSection.classList.remove('show');
 
   try {
-    const res = await fetch("http://localhost:3000/api/generate", {
+    const res = await fetch("https://voiceflow-30h7.onrender.com/api/generate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ text, voice_id: voiceId })
@@ -69,17 +67,13 @@ async function generateSpeech() {
     voicePreview.src = audioUrl;
     voicePreview.load();
 
-   
     audioSection.classList.add('show');
-
- 
     try {
       await voicePreview.play();
     } catch (err) {
       console.warn("Autoplay blocked, user must press play:", err);
     }
 
- 
     downloadBtn.onclick = () => {
       const link = document.createElement("a");
       link.href = audioUrl;
@@ -96,7 +90,6 @@ async function generateSpeech() {
     btnText.textContent = 'Generate Speech';
   }
 }
-
 
 listenBtn.addEventListener("click", generateSpeech);
 window.addEventListener("load", loadVoices);
