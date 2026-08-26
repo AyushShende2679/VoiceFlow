@@ -1,82 +1,151 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VoiceFlow - Translator</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta name="description" content="VoiceFlow Translator — Instant translation between 15 languages with copy, swap and speech.">
+  <title>VoiceFlow — Translator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 </head>
 <body>
-  <div class="bg-overlay"></div>
-  <div class="gradient-overlay"></div>
-  <div class="orb orb1"></div>
-  <div class="orb orb2"></div>
-  <div class="orb orb3"></div>
+  <header class="site-header" role="banner">
+    <div class="header-inner">
+      <a href="index.html" class="brand" aria-label="VoiceFlow home">
+        <span class="brand-mark" aria-hidden="true"><i data-lucide="audio-waveform"></i></span>
+        <span class="brand-text">VoiceFlow <span>— Studio</span></span>
+      </a>
+      <nav class="nav-bar" aria-label="Primary">
+        <a href="index.html" class="nav-btn"><i data-lucide="mic"></i> Text to Speech</a>
+        <a href="stt.html" class="nav-btn"><i data-lucide="audio-lines"></i> Speech to Text</a>
+        <a href="translate.html" class="nav-btn active" aria-current="page"><i data-lucide="languages"></i> Translate</a>
+      </nav>
+      <div class="header-actions">
+        <button id="themeToggle" class="icon-btn" aria-label="Toggle theme"><i data-lucide="moon"></i></button>
+      </div>
+    </div>
+  </header>
+  <nav class="mobile-nav" aria-label="Mobile">
+    <a href="index.html" class="nav-btn"><i data-lucide="mic"></i> Text to Speech</a>
+    <a href="stt.html" class="nav-btn"><i data-lucide="audio-lines"></i> Speech to Text</a>
+    <a href="translate.html" class="nav-btn active"><i data-lucide="languages"></i> Translate</a>
+  </nav>
 
- 
-  <div class="nav-bar">
-    <a href="index.html" class="nav-btn">🎙️ Text to Speech</a>
-    <a href="stt.html" class="nav-btn">🎤 Speech to Text</a>
-    <a href="translate.html" class="nav-btn active">🌍 Translate</a>
+  <div class="page">
+    <div class="container">
+      <div class="header">
+        <div class="eyebrow"><i data-lucide="languages"></i> 15+ LANGUAGES • Auto-detect source • Instant</div>
+        <div class="logo"><span class="logo-text">Translator</span></div>
+        <p class="tagline">Break language barriers. Type or paste, choose target language, translate and speak the result in one click.</p>
+      </div>
+
+      <div class="main-card" role="region" aria-labelledby="trHeading">
+        <h2 id="trHeading" class="sr-only">Translator</h2>
+
+        <div class="split" style="align-items: end;">
+          <div class="select-wrapper">
+            <label class="label" for="sourceHint"><i data-lucide="globe"></i> Source (auto-detected)</label>
+            <div class="pill" id="sourceHint" style="padding:10px 14px; justify-content:center;"><i data-lucide="sparkles" style="width:14px;height:14px;"></i> Auto detect</div>
+          </div>
+          <div style="display:flex; align-items:center; justify-content:center; padding-bottom:2px;">
+            <button id="swapBtn" class="swap-btn" type="button" aria-label="Swap languages" title="Swap"><i data-lucide="arrow-left-right"></i></button>
+          </div>
+          <div class="select-wrapper">
+            <label class="label" for="translateSelect"><i data-lucide="flag"></i> Target language</label>
+            <select id="translateSelect" aria-label="Target language">
+              <option value="en">English</option>
+              <option value="hi">Hindi — हिन्दी</option>
+              <option value="mr">Marathi — मराठी</option>
+              <option value="ko">Korean — 한국어</option>
+              <option value="zh">Chinese — 中文</option>
+              <option value="es">Spanish — Español</option>
+              <option value="fr">French — Français</option>
+              <option value="de">German — Deutsch</option>
+              <option value="ja">Japanese — 日本語</option>
+              <option value="ar">Arabic — العربية</option>
+              <option value="ru">Russian — Русский</option>
+              <option value="it">Italian — Italiano</option>
+              <option value="pt">Portuguese</option>
+              <option value="tr">Turkish</option>
+            </select>
+            <span class="select-icon" aria-hidden="true"><i data-lucide="chevron-down"></i></span>
+          </div>
+        </div>
+
+        <div class="split" style="margin-top:18px;">
+          <div class="input-section" style="margin-bottom:0;">
+            <label class="label" for="translateInput"><i data-lucide="type"></i> Enter text</label>
+            <div class="textarea-wrapper">
+              <textarea id="translateInput" placeholder="Type or paste your text here… (e.g., Hello, how are you?)" maxlength="1000"></textarea>
+              <span class="char-count" id="translateCharCount">0 characters</span>
+            </div>
+            <div class="input-toolbar">
+              <button id="clearTranslateBtn" class="btn btn-ghost" type="button"><i data-lucide="x"></i> Clear</button>
+              <button id="pasteTranslateBtn" class="btn btn-ghost" type="button"><i data-lucide="clipboard"></i> Paste</button>
+              <span class="kbd">↩ Enter to translate</span>
+            </div>
+          </div>
+
+          <div class="input-section" style="margin-bottom:0;">
+            <label class="label" for="translateOutput"><i data-lucide="check"></i> Translation <span id="detectedLang" class="pill" style="display:none; margin-left:6px; font-size:11px; padding:2px 6px;"></span></label>
+            <div class="textarea-wrapper" id="translatedSection" style="display:block;">
+              <textarea id="translateOutput" readonly placeholder="Translation will appear here…" aria-live="polite"></textarea>
+              <span class="char-count" id="translateOutputCount">0 characters</span>
+            </div>
+            <div class="input-toolbar">
+              <button id="copyTranslateBtn" class="btn btn-secondary" type="button"><i data-lucide="copy"></i> Copy</button>
+              <button id="speakTranslateBtn" class="btn btn-ghost" type="button"><i data-lucide="volume-2"></i> Speak</button>
+              <button id="shareTranslateBtn" class="btn btn-ghost" type="button"><i data-lucide="share-2"></i> Share</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:16px; display:flex; gap:12px; flex-wrap:wrap;">
+          <button id="translateBtn" class="btn btn-primary btn-lg" type="button" style="flex:1; min-width: 200px;"><i data-lucide="languages"></i> Translate</button>
+          <span class="muted" style="align-self:center; font-size:12px;">Powered by Google Translate • Free & private</span>
+        </div>
+
+        <div id="translateAlert" style="margin-top:14px;"></div>
+      </div>
+
+      <div class="features">
+        <div class="feature-card"><div class="feature-icon"><i data-lucide="zap"></i></div><div class="feature-title">Instant & accurate</div><div class="feature-desc">Auto-detects source language, preserves formatting and punctuation.</div></div>
+        <div class="feature-card"><div class="feature-icon"><i data-lucide="copy"></i></div><div class="feature-title">Copy & speak</div><div class="feature-desc">One-click copy, share, or listen to translation via TTS.</div></div>
+        <div class="feature-card"><div class="feature-icon"><i data-lucide="globe"></i></div><div class="feature-title">15 languages</div><div class="feature-desc">English, Hindi, Marathi, Korean, Chinese, Spanish and more.</div></div>
+      </div>
+    </div>
   </div>
 
-  <div class="container">
-    <div class="header">
-      <div class="logo">
-        <span class="logo-icon">🌍</span>
-        <span class="logo-text">Translator</span>
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-inner">
+      <div style="display:flex; align-items:center; gap:10px; font-weight:600;">
+        <span class="brand-mark" style="width:28px;height:28px;border-radius:8px;font-size:0;"><i data-lucide="audio-waveform" style="width:14px;height:14px;"></i></span>
+        VoiceFlow <span class="muted" style="font-weight:500;">— Studio</span>
       </div>
-      <p class="tagline">Translate text between multiple languages instantly</p>
+      <div class="muted" style="font-size:13px; text-align:center;">© 2026 VoiceFlow. Crafted with precision for creators worldwide. • No login • Free & private</div>
+      <div class="muted" style="font-size:12px;">Renderer: Google Translate TTS</div>
     </div>
+  </footer>
 
-    <div class="main-card">
-      <div class="input-section">
-        <label class="label">📝 Enter Text to Translate</label>
-        <div class="textarea-wrapper">
-          <textarea id="translateInput" placeholder="Type or paste your text here..."></textarea>
-          <span class="char-count" id="translateCharCount">0 characters</span>
-        </div>
-      </div>
-
-      <div class="controls">
-        <div class="select-wrapper">
-          <label class="label">🌐 Target Language</label>
-          <select id="translateSelect">
-            <option value="en">English</option>
-            <option value="hi">Hindi</option>
-            <option value="mr">Marathi</option>
-            <option value="ko">Korean</option>
-            <option value="zh">Chinese</option>
-            <option value="es">Spanish</option>
-            <option value="fr">French</option>
-            <option value="de">German</option>
-            <option value="ja">Japanese</option>
-            <option value="ar">Arabic</option>
-          </select>
-          <span class="select-icon">▼</span>
-        </div>
-
-        <div>
-          <label class="label">&nbsp;</label>
-          <button id="translateBtn" class="btn btn-primary">
-            🔄 Translate
-          </button>
-        </div>
-      </div>
-
-      <div id="translatedSection" class="input-section" style="display:none;">
-        <label class="label">✅ Translated Text</label>
-        <div class="textarea-wrapper">
-          <textarea id="translateOutput" readonly></textarea>
-          <span class="char-count" id="translateOutputCount">0 characters</span>
-        </div>
-      </div>
-
-      <div id="translateAlert"></div>
-    </div>
-  </div>
-
+  <div id="toastContainer"></div>
+  <script>
+    const html=document.documentElement, tt=document.getElementById('themeToggle');
+    const saved=localStorage.getItem('vf-theme'); if(saved) html.setAttribute('data-theme', saved);
+    function syncIcon(){ const isDark=html.getAttribute('data-theme')==='dark' || (!html.getAttribute('data-theme') && matchMedia('(prefers-color-scheme:dark)').matches); tt.innerHTML = isDark? '<i data-lucide="sun"></i>' : '<i data-lucide="moon"></i>'; lucide.createIcons(); }
+    syncIcon(); tt.addEventListener('click',()=>{ const cur=html.getAttribute('data-theme'); const next=cur==='dark'?'light':cur==='light'?'dark':(matchMedia('(prefers-color-scheme:dark)').matches?'light':'dark'); html.setAttribute('data-theme', next); localStorage.setItem('vf-theme', next); syncIcon(); });
+    // Toolbar extras
+    document.getElementById('clearTranslateBtn')?.addEventListener('click', ()=>{ const el=document.getElementById('translateInput'); el.value=''; el.dispatchEvent(new Event('input')); document.getElementById('translateOutput').value=''; document.getElementById('translateOutputCount').textContent='0 characters'; el.focus(); });
+    document.getElementById('pasteTranslateBtn')?.addEventListener('click', async()=>{ try{ const t=await navigator.clipboard.readText(); const el=document.getElementById('translateInput'); el.value=t; el.dispatchEvent(new Event('input')); }catch{}});
+    document.getElementById('copyTranslateBtn')?.addEventListener('click', ()=>{ const v=document.getElementById('translateOutput').value; if(!v) return; navigator.clipboard.writeText(v); showToast('Copied to clipboard','success'); });
+    document.getElementById('speakTranslateBtn')?.addEventListener('click', ()=>{ const t=document.getElementById('translateOutput').value.trim(); if(!t) return showToast('Nothing to speak','error'); const u=new SpeechSynthesisUtterance(t); u.lang=document.getElementById('translateSelect').value; speechSynthesis.speak(u); });
+    document.getElementById('shareTranslateBtn')?.addEventListener('click', async()=>{ const t=document.getElementById('translateOutput').value; if(!t) return; if(navigator.share) try{await navigator.share({title:'VoiceFlow Translation', text:t});}catch{} else { navigator.clipboard.writeText(t); showToast('Copied — share not supported','info'); } });
+    document.getElementById('swapBtn')?.addEventListener('click', ()=>{ const a=document.getElementById('translateInput'), b=document.getElementById('translateOutput'); const tmp=a.value; a.value=b.value; b.value=tmp; a.dispatchEvent(new Event('input')); b.dispatchEvent(new Event('input')); document.getElementById('translateOutputCount').textContent=b.value.length+' characters'; if (window.lucide) lucide.createIcons(); });
+    document.getElementById('translateInput')?.addEventListener('keydown', (e)=>{ if(e.key==='Enter' && (e.ctrlKey||e.metaKey)){ e.preventDefault(); document.getElementById('translateBtn').click(); }});
+    function showToast(msg, type=''){ const c=document.getElementById('toastContainer'); const div=document.createElement('div'); div.className='toast '+(type||''); div.textContent=msg; c.appendChild(div); setTimeout(()=>div.remove(),2200); }
+    lucide.createIcons();
+  </script>
   <script src="script_translate.js"></script>
 </body>
 </html>

@@ -1,74 +1,173 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VoiceFlow - Text to Speech</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta name="description" content="VoiceFlow — Convert text to natural speech in 15+ languages. Fast, free, browser-based TTS with download.">
+  <meta name="color-scheme" content="light dark">
+  <title>VoiceFlow — Text to Speech</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 </head>
 <body>
-  <div class="bg-overlay"></div>
-  <div class="gradient-overlay"></div>
-  <div class="orb orb1"></div>
-  <div class="orb orb2"></div>
-  <div class="orb orb3"></div>
-
- 
-  <div class="nav-bar">
-    <a href="index.html" class="nav-btn active">🎙️ Text to Speech</a>
-    <a href="stt.html" class="nav-btn">🎤 Speech to Text</a>
-    <a href="translate.html" class="nav-btn">🌍 Translate</a>
-  </div>
-
-  <div class="container">
-    <div class="header">
-      <div class="logo">
-        <span class="logo-icon">🎙️</span>
-        <span class="logo-text">Text to Speech</span>
-      </div>
-      <p class="tagline">Transform your text into natural-sounding speech in multiple languages</p>
-    </div>
-
-    <div class="main-card">
-      <div class="input-section">
-        <label class="label">📝 Enter Your Text</label>
-        <div class="textarea-wrapper">
-          <textarea id="textInput" placeholder="Type or paste your text here... Try different languages!"></textarea>
-          <span class="char-count" id="charCount">0 characters</span>
-        </div>
-      </div>
-
-      <div class="controls">
-        <div class="select-wrapper">
-          <label class="label">🌐 Select Voice</label>
-          <select id="voiceSelect">
-            <option value="">Loading voices...</option>
-          </select>
-          <span class="select-icon">▼</span>
-        </div>
-
-        <div>
-          <label class="label">&nbsp;</label>
-          <button id="listenBtn" class="btn btn-primary">
-            <span id="btnIcon">🔊</span>
-            <span id="btnText">Generate Speech</span>
-          </button>
-        </div>
-      </div>
-
-      <div class="audio-section" id="audioSection">
-        <label class="label">🎵 Your Generated Speech</label>
-        <div class="audio-player">
-          <audio id="voicePreview" controls></audio>
-        </div>
-        <button id="downloadBtn" class="btn btn-success">
-          ⬇️ Download Audio
+  <header class="site-header" role="banner">
+    <div class="header-inner">
+      <a href="index.html" class="brand" aria-label="VoiceFlow home">
+        <span class="brand-mark" aria-hidden="true"><i data-lucide="audio-waveform"></i></span>
+        <span class="brand-text">VoiceFlow <span>— Studio</span></span>
+      </a>
+      <nav class="nav-bar" aria-label="Primary">
+        <a href="index.html" class="nav-btn active" aria-current="page"><i data-lucide="mic"></i> Text to Speech</a>
+        <a href="stt.html" class="nav-btn"><i data-lucide="audio-lines"></i> Speech to Text</a>
+        <a href="translate.html" class="nav-btn"><i data-lucide="languages"></i> Translate</a>
+      </nav>
+      <div class="header-actions">
+        <button id="themeToggle" class="icon-btn" aria-label="Toggle theme" title="Toggle light/dark">
+          <i data-lucide="moon"></i>
         </button>
       </div>
     </div>
+  </header>
+  <nav class="mobile-nav" aria-label="Mobile navigation">
+    <a href="index.html" class="nav-btn active"><i data-lucide="mic"></i> Text to Speech</a>
+    <a href="stt.html" class="nav-btn"><i data-lucide="audio-lines"></i> Speech to Text</a>
+    <a href="translate.html" class="nav-btn"><i data-lucide="languages"></i> Translate</a>
+  </nav>
+
+  <div class="page">
+    <div class="container">
+      <div class="header">
+        <div class="eyebrow"><i data-lucide="sparkles"></i> NEW — 15 Voices • 200 chars instant • MP3 download</div>
+        <div class="logo">
+          <span class="logo-text">Text to Speech</span>
+        </div>
+        <p class="tagline">Transform any text into natural, studio-grade speech. Choose a voice, generate, preview and download — all in your browser.</p>
+      </div>
+
+      <div class="main-card" role="region" aria-labelledby="tts-heading">
+        <h2 id="tts-heading" class="sr-only">Text to Speech generator</h2>
+
+        <div class="input-section">
+          <label class="label" for="textInput"><i data-lucide="file-text"></i> Enter your text <small>Supports multilingual input</small></label>
+          <div class="textarea-wrapper">
+            <textarea id="textInput" placeholder="Type or paste your text here… Try: “Hello! How are you today?” in Hindi, Spanish or Japanese" maxlength="500" aria-describedby="charCount helper"></textarea>
+            <span class="char-count" id="charCount" aria-live="polite">0 characters</span>
+          </div>
+          <div class="input-toolbar">
+            <button type="button" id="clearBtn" class="btn btn-ghost"><i data-lucide="x"></i> Clear</button>
+            <button type="button" id="pasteBtn" class="btn btn-ghost"><i data-lucide="clipboard"></i> Paste</button>
+            <span class="kbd">200 char limit for best quality</span>
+            <span style="margin-left:auto" class="pill"><span class="dot" style="background: var(--color-accent)"></span> Google TTS • MP3</span>
+          </div>
+          <div id="helper" class="muted" style="font-size:12px; margin-top:8px;">Tip: Select a matching language voice for better pronunciation. <span id="helperLang"></span></div>
+        </div>
+
+        <div class="controls">
+          <div class="select-wrapper">
+            <label class="label" for="voiceSelect"><i data-lucide="globe"></i> Select voice</label>
+            <select id="voiceSelect" aria-label="Select voice">
+              <option value="">Loading voices…</option>
+            </select>
+            <span class="select-icon" aria-hidden="true"><i data-lucide="chevron-down"></i></span>
+          </div>
+          <button id="listenBtn" class="btn btn-primary btn-lg" type="button" aria-label="Generate speech">
+            <span id="btnIcon" aria-hidden="true"><i data-lucide="play"></i></span>
+            <span id="btnText">Generate Speech</span>
+          </button>
+        </div>
+
+        <div class="audio-section" id="audioSection" aria-live="polite">
+          <label class="label"><i data-lucide="music"></i> Your generated speech</label>
+          <div class="audio-player">
+            <div class="waveform" id="waveform" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+            <audio id="voicePreview" controls preload="metadata"></audio>
+            <div class="audio-meta">
+              <span id="audioMetaLeft">Ready to play • MP3</span>
+              <span id="audioTime"></span>
+            </div>
+          </div>
+          <div class="grid-2">
+            <button id="downloadBtn" class="btn btn-success"><i data-lucide="download"></i> Download MP3</button>
+            <button id="copyAudioLinkBtn" class="btn btn-secondary" type="button"><i data-lucide="share-2"></i> Copy audio link</button>
+          </div>
+        </div>
+
+        <div id="ttsAlert" role="status" aria-live="polite"></div>
+      </div>
+
+      <div class="stats" aria-label="Product stats">
+        <div class="stat"><span class="stat-icon accent"><i data-lucide="zap"></i></span><div><div class="stat-label">Latency</div><div class="stat-value">< 1.2s avg</div></div></div>
+        <div class="stat"><span class="stat-icon red"><i data-lucide="languages"></i></span><div><div class="stat-label">Languages</div><div class="stat-value">15 voices</div></div></div>
+        <div class="stat"><span class="stat-icon green"><i data-lucide="shield-check"></i></span><div><div class="stat-label">Free & Private</div><div class="stat-value">No login</div></div></div>
+      </div>
+
+      <div class="features" aria-label="Features">
+        <div class="feature-card">
+          <div class="feature-icon"><i data-lucide="audio-waveform"></i></div>
+          <div class="feature-title">Natural prosody</div>
+          <div class="feature-desc">Neural TTS with correct pacing and intonation for each language.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i data-lucide="download"></i></div>
+          <div class="feature-title">One-click download</div>
+          <div class="feature-desc">Export MP3 instantly for reels, podcasts, or presentations.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i data-lucide="smartphone"></i></div>
+          <div class="feature-title">Works everywhere</div>
+          <div class="feature-desc">Fully responsive, keyboard-accessible, respects reduced motion.</div>
+        </div>
+      </div>
+    </div>
   </div>
 
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-inner">
+      <div style="display:flex; align-items:center; gap:10px; font-weight:600;">
+        <span class="brand-mark" style="width:28px;height:28px;border-radius:8px;font-size:0;"><i data-lucide="audio-waveform" style="width:14px;height:14px;"></i></span>
+        VoiceFlow <span class="muted" style="font-weight:500;">— Studio</span>
+      </div>
+      <div class="muted" style="font-size:13px; text-align:center;">© 2026 VoiceFlow. Crafted with precision for creators worldwide. • No login • Free & private</div>
+      <div class="muted" style="font-size:12px;">Renderer: Google Translate TTS</div>
+    </div>
+  </footer>
+
+  <div id="toastContainer" aria-live="polite" aria-atomic="true"></div>
+  <script>
+    // Theme toggle — persist
+    const tt = document.getElementById('themeToggle');
+    const html = document.documentElement;
+    const saved = localStorage.getItem('vf-theme');
+    if (saved) html.setAttribute('data-theme', saved);
+    function syncIcon() {
+      const isDark = html.getAttribute('data-theme') === 'dark' || (!html.getAttribute('data-theme') && matchMedia('(prefers-color-scheme: dark)').matches);
+      tt.innerHTML = isDark ? '<i data-lucide="sun"></i>' : '<i data-lucide="moon"></i>';
+      lucide.createIcons();
+    }
+    syncIcon();
+    tt.addEventListener('click', () => {
+      const cur = html.getAttribute('data-theme');
+      const next = cur === 'dark' ? 'light' : cur === 'light' ? 'dark' : (matchMedia('(prefers-color-scheme: dark)').matches ? 'light' : 'dark');
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('vf-theme', next);
+      syncIcon();
+    });
+    // Extra toolbar actions (keep JS decoupled)
+    document.getElementById('clearBtn')?.addEventListener('click', () => {
+      const el = document.getElementById('textInput'); el.value=''; el.dispatchEvent(new Event('input')); el.focus();
+    });
+    document.getElementById('pasteBtn')?.addEventListener('click', async () => {
+      try { const t = await navigator.clipboard.readText(); const el=document.getElementById('textInput'); el.value=t; el.dispatchEvent(new Event('input')); } catch{}
+    });
+    document.getElementById('copyAudioLinkBtn')?.addEventListener('click', () => {
+      const a = document.getElementById('voicePreview');
+      if (a && a.src) { navigator.clipboard.writeText(a.src); const c=document.getElementById('toastContainer'); const div=document.createElement('div'); div.className='toast success'; div.innerHTML='<i data-lucide="check"></i> Audio link copied'; c.appendChild(div); lucide.createIcons(); setTimeout(()=>div.remove(),2200); }
+    });
+    lucide.createIcons();
+  </script>
   <script src="script_tts.js"></script>
 </body>
 </html>

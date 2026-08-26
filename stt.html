@@ -1,52 +1,128 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VoiceFlow - Speech to Text</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta name="description" content="VoiceFlow Speech to Text — Instant voice transcription with live waveform and language selection.">
+  <title>VoiceFlow — Speech to Text</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 </head>
 <body>
-  <div class="bg-overlay"></div>
-  <div class="gradient-overlay"></div>
-  <div class="orb orb1"></div>
-  <div class="orb orb2"></div>
-  <div class="orb orb3"></div>
-
-  <div class="nav-bar">
-    <a href="index.html" class="nav-btn">🎙️ Text to Speech</a>
-    <a href="stt.html" class="nav-btn active">🎤 Speech to Text</a>
-    <a href="translate.html" class="nav-btn">🌍 Translate</a>
-  </div>
-
-  <div class="container">
-    <div class="header">
-      <div class="logo">
-        <span class="logo-icon">🎤</span>
-        <span class="logo-text">Speech to Text</span>
+  <header class="site-header" role="banner">
+    <div class="header-inner">
+      <a href="index.html" class="brand" aria-label="VoiceFlow home">
+        <span class="brand-mark" aria-hidden="true"><i data-lucide="audio-waveform"></i></span>
+        <span class="brand-text">VoiceFlow <span>— Studio</span></span>
+      </a>
+      <nav class="nav-bar" aria-label="Primary">
+        <a href="index.html" class="nav-btn"><i data-lucide="mic"></i> Text to Speech</a>
+        <a href="stt.html" class="nav-btn active" aria-current="page"><i data-lucide="audio-lines"></i> Speech to Text</a>
+        <a href="translate.html" class="nav-btn"><i data-lucide="languages"></i> Translate</a>
+      </nav>
+      <div class="header-actions">
+        <button id="themeToggle" class="icon-btn" aria-label="Toggle theme"><i data-lucide="moon"></i></button>
       </div>
-      <p class="tagline">Convert your voice into written text instantly</p>
     </div>
+  </header>
+  <nav class="mobile-nav" aria-label="Mobile">
+    <a href="index.html" class="nav-btn"><i data-lucide="mic"></i> Text to Speech</a>
+    <a href="stt.html" class="nav-btn active"><i data-lucide="audio-lines"></i> Speech to Text</a>
+    <a href="translate.html" class="nav-btn"><i data-lucide="languages"></i> Translate</a>
+  </nav>
 
-    <div class="main-card">
-      <button id="speechToTextBtn" class="btn btn-success" style="margin-bottom: 30px;">
-        <span id="micIcon">🎤</span>
-        <span id="micText">Start Recording</span>
-      </button>
+  <div class="page">
+    <div class="container">
+      <div class="header">
+        <div class="eyebrow"><i data-lucide="mic"></i> LIVE CAPTURE • Browser SpeechRecognition API</div>
+        <div class="logo"><span class="logo-text">Speech to Text</span></div>
+        <p class="tagline">Speak naturally and get instant transcription. Supports 10+ languages, live waveform, one-click copy and export.</p>
+      </div>
 
-      <div class="input-section">
-        <label class="label">📝 Transcribed Text</label>
-        <div class="textarea-wrapper">
-          <textarea id="sttOutput" placeholder="Your transcribed text will appear here..." readonly></textarea>
-          <span class="char-count" id="sttCharCount">0 characters</span>
+      <div class="main-card" id="sttCard" role="region" aria-labelledby="sttHeading">
+        <h2 id="sttHeading" class="sr-only">Speech to Text</h2>
+
+        <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:18px;">
+          <button id="speechToTextBtn" class="btn btn-success btn-lg" type="button" aria-label="Start recording" style="min-width: 200px;">
+            <span id="micIcon" aria-hidden="true"><i data-lucide="mic"></i></span>
+            <span id="micText">Start Recording</span>
+          </button>
+          <span id="recPill" class="pill" style="display:none;"><span class="dot pulse"></span> Listening… <span id="recTimer">00:00</span></span>
+          <span class="muted" style="font-size:12px;">Press and speak clearly. Click to stop.</span>
+          <div style="margin-left:auto; display:flex; gap:8px; align-items:center;">
+            <label for="sttLang" class="sr-only">Recognition language</label>
+            <select id="sttLang" class="translate-select" style="min-width: 160px;">
+              <option value="en-IN">English (India)</option>
+              <option value="en-US">English (US)</option>
+              <option value="hi-IN">Hindi</option>
+              <option value="mr-IN">Marathi</option>
+              <option value="es-ES">Spanish</option>
+              <option value="fr-FR">French</option>
+              <option value="de-DE">German</option>
+              <option value="ja-JP">Japanese</option>
+              <option value="ko-KR">Korean</option>
+              <option value="zh-CN">Chinese</option>
+              <option value="ar-SA">Arabic</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="liveWave" class="levels" style="display:none; margin-bottom:12px;" aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+
+        <div class="input-section">
+          <label class="label" for="sttOutput"><i data-lucide="file-text"></i> Transcribed text <small id="confidenceBadge" class="pill" style="display:none; margin-left:8px;"></small></label>
+          <div class="textarea-wrapper">
+            <textarea id="sttOutput" placeholder="Your transcribed text will appear here… Tip: Try saying “Hello VoiceFlow, transcribe this meeting note.”" readonly aria-live="polite"></textarea>
+            <span class="char-count" id="sttCharCount">0 characters</span>
+          </div>
+          <div class="input-toolbar">
+            <button id="copySttBtn" class="btn btn-secondary"><i data-lucide="copy"></i> Copy text</button>
+            <button id="clearSttBtn" class="btn btn-ghost"><i data-lucide="trash-2"></i> Clear</button>
+            <button id="downloadSttBtn" class="btn btn-ghost"><i data-lucide="download"></i> Download .txt</button>
+            <span style="margin-left:auto" class="kbd">🎙️ Uses Web Speech API</span>
+          </div>
+        </div>
+
+        <div id="sttAlert" role="status" aria-live="polite"></div>
+
+        <div class="divider"></div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+          <span class="muted" style="font-size:13px;"><i data-lucide="info" style="width:14px; height:14px; vertical-align:-2px;"></i> Not supported? Try Chrome or Edge on desktop. Allow microphone permission.</span>
+          <a href="translate.html" class="btn btn-ghost" style="margin-left:auto;"><i data-lucide="languages"></i> Translate this text</a>
         </div>
       </div>
 
-      <button id="copySttBtn" class="btn btn-primary">📋 Copy Text</button>
+      <div class="features" aria-label="Tips">
+        <div class="feature-card"><div class="feature-icon"><i data-lucide="mic"></i></div><div class="feature-title">Speak clearly</div><div class="feature-desc">Hold mic 20cm away, avoid background noise for 95%+ accuracy.</div></div>
+        <div class="feature-card"><div class="feature-icon"><i data-lucide="languages"></i></div><div class="feature-title">Multilingual</div><div class="feature-desc">Switch recognition language to Hindi, Marathi, Spanish etc. before recording.</div></div>
+        <div class="feature-card"><div class="feature-icon"><i data-lucide="copy"></i></div><div class="feature-title">Instant copy</div><div class="feature-desc">Copy or download transcript and paste into docs, Notion, or chat.</div></div>
+      </div>
     </div>
   </div>
 
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-inner">
+      <div style="display:flex; align-items:center; gap:10px; font-weight:600;">
+        <span class="brand-mark" style="width:28px;height:28px;border-radius:8px;font-size:0;"><i data-lucide="audio-waveform" style="width:14px;height:14px;"></i></span>
+        VoiceFlow <span class="muted" style="font-weight:500;">— Studio</span>
+      </div>
+      <div class="muted" style="font-size:13px; text-align:center;">© 2026 VoiceFlow. Crafted with precision for creators worldwide. • No login • Free & private</div>
+      <div class="muted" style="font-size:12px;">Renderer: Google Translate TTS</div>
+    </div>
+  </footer>
+
+  <div id="toastContainer"></div>
+  <script>
+    const html=document.documentElement, tt=document.getElementById('themeToggle');
+    const saved=localStorage.getItem('vf-theme'); if(saved) html.setAttribute('data-theme', saved);
+    function syncIcon(){ const isDark=html.getAttribute('data-theme')==='dark' || (!html.getAttribute('data-theme') && matchMedia('(prefers-color-scheme:dark)').matches); tt.innerHTML = isDark? '<i data-lucide="sun"></i>' : '<i data-lucide="moon"></i>'; lucide.createIcons(); }
+    syncIcon(); tt.addEventListener('click',()=>{ const cur=html.getAttribute('data-theme'); const next=cur==='dark'?'light':cur==='light'?'dark':(matchMedia('(prefers-color-scheme:dark)').matches?'light':'dark'); html.setAttribute('data-theme', next); localStorage.setItem('vf-theme', next); syncIcon(); });
+    lucide.createIcons();
+  </script>
   <script src="script_stt.js"></script>
 </body>
 </html>
